@@ -12,7 +12,6 @@ Hardware<br>
 > SHARP PSD Sensor<br>
 
 <br>
-<br>
 SoftWare<br>
 > OepnCM IDE(with Arduino)<br>
 > C++<br>
