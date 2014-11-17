@@ -184,8 +184,85 @@ void Dxl_MotionRun(int Motion_Start, int Motion_End, int Speed, int Delay)
   for(Motion_Start;Motion_Start <= Motion_End; Motion_Start++)
   {
     Dxl_positionRun(Motion_Start, Speed);
-    if(MoveStop == 1) break;
     delay(Delay);
   }
 }
+/*
 
+void Dxl_RemoteRun(char Type, int Speed, int Delay)
+{
+  char cnt=0;
+  
+  while(Type=='f')
+  {
+    if(Serial2.available()){
+      if(cnt==0) Dxl_positionRun(2, Speed), delay(Delay), cnt=1;
+      else if(cnt==1) Dxl_positionRun(3, Speed), delay(Delay), cnt=2;
+      else if(cnt==2) Dxl_positionRun(4, Speed), delay(Delay), cnt=3;
+      else if(cnt==3) Dxl_positionRun(5, Speed), delay(Delay), cnt=0;
+    }
+    else
+    {
+      Dxl_positionRun(1, Speed);
+      delay(Delay);
+      break;
+    }
+  }
+  
+  while(Type=='b')
+  {
+    if(Serial2.available()){
+      if(cnt==0) Dxl_positionRun(6, Speed), delay(Delay), cnt=1;
+      else if(cnt==1) Dxl_positionRun(7, Speed), delay(Delay), cnt=2;
+      else if(cnt==2) Dxl_positionRun(8, Speed), delay(Delay), cnt=3;
+      else if(cnt==3) Dxl_positionRun(9, Speed), delay(Delay), cnt=0;
+    }
+    else
+    {
+      Dxl_positionRun(1, Speed);
+      delay(Delay);
+      break;
+    }
+  }
+  
+  while(Type=='l')
+  {
+    if(Serial2.available()){
+      if(cnt==0) Dxl_positionRun(10, Speed), delay(Delay), cnt=1;
+      else if(cnt==1) Dxl_positionRun(11, Speed), delay(Delay), cnt=2;
+      else if(cnt==2) Dxl_positionRun(12, Speed), delay(Delay), cnt=3;
+      else if(cnt==3) Dxl_positionRun(13, Speed), delay(Delay), cnt=0;
+    }
+    else
+    {
+      Dxl_positionRun(1, Speed);
+      delay(Delay);
+      break;
+    }
+  }
+  
+  while(Type=='r')
+  {
+    if(Serial2.available()){
+      if(cnt==0) Dxl_positionRun(14, Speed), delay(Delay), cnt=1;
+      else if(cnt==1) Dxl_positionRun(15, Speed), delay(Delay), cnt=2;
+      else if(cnt==2) Dxl_positionRun(16, Speed), delay(Delay), cnt=3;
+      else if(cnt==3) Dxl_positionRun(17, Speed), delay(Delay), cnt=0;
+    }
+    else
+    {
+      Dxl_positionRun(1, Speed);
+      delay(Delay);
+      break;
+    }
+  }
+  
+  while(Type=='s')
+  {
+    Dxl_positionRun(1, Speed);
+    delay(Delay);
+    break;
+  }
+}
+
+*/
