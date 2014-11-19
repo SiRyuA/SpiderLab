@@ -221,7 +221,7 @@ int Dxl_MPArray[][18]={
   {Dxl_L_FD, Dxl_L_R, Dxl_C, Dxl_L_FD, Dxl_L_R, Dxl_C, Dxl_L_U, Dxl_L_HU, Dxl_C,
    Dxl_R_U, Dxl_R_HU, Dxl_C, Dxl_R_FD, Dxl_R_R, Dxl_C, Dxl_R_FD, Dxl_R_R, Dxl_C},
   
-/* 앞다리 흔들기 - 58~59 */
+/* 앞다리 흔들기 ON - 58~59 */
   {Dxl_C, Dxl_L_U, Dxl_C,  Dxl_L_FD, Dxl_L_R, Dxl_C, Dxl_L_FD, Dxl_L_R, Dxl_C,
    Dxl_R_FD, Dxl_R_R, Dxl_C, Dxl_R_FD, Dxl_R_R, Dxl_C, Dxl_C, Dxl_R_U, Dxl_C},
   
@@ -260,8 +260,15 @@ int Dxl_MPArray[][18]={
    Dxl_R_U, Dxl_R_R, Dxl_C, Dxl_R_U, Dxl_R_R, Dxl_C, Dxl_R_U, Dxl_R_R, Dxl_C},
   
 /* 누워서 다리들기 - 69 */
-  {Dxl_L_D, Dxl_L_R, Dxl_C, Dxl_L_D, Dxl_L_R, Dxl_C, Dxl_L_D, Dxl_L_R, Dxl_C,
-   Dxl_R_D, Dxl_R_R, Dxl_C, Dxl_R_D, Dxl_R_R, Dxl_C, Dxl_R_D, Dxl_R_R, Dxl_C},
+  {Dxl_L_FU, Dxl_L_U, Dxl_C, Dxl_L_FU, Dxl_L_U, Dxl_C, Dxl_L_FU, Dxl_L_U, Dxl_C,
+   Dxl_R_FU, Dxl_R_U, Dxl_C, Dxl_R_FU, Dxl_R_U, Dxl_C, Dxl_R_FU, Dxl_R_U, Dxl_C},
+   
+/* 앞다리 흔들기 - 70~71 */
+  {Dxl_C, Dxl_L_U, Dxl_C,  Dxl_L_C, Dxl_L_LD, Dxl_C, Dxl_L_FD, Dxl_L_R, Dxl_C,
+   Dxl_R_FD, Dxl_R_R, Dxl_C, Dxl_R_C, Dxl_R_LD, Dxl_C, Dxl_C, Dxl_R_U, Dxl_C},
+  
+  {Dxl_L_U,Dxl_L_HU, Dxl_C, Dxl_L_C, Dxl_L_LD, Dxl_C, Dxl_L_FD, Dxl_L_R, Dxl_C,
+   Dxl_R_FD, Dxl_R_R, Dxl_C, Dxl_R_C, Dxl_R_LD, Dxl_C, Dxl_R_U, Dxl_R_HU, Dxl_C},
 };
 
 /* Dyanamixel Mount */
@@ -296,8 +303,21 @@ void Dxl_MotionRun(int Motion_Start, int Motion_End, int Speed, int Delay)
     delay(Delay);
   }
 }
-/*
 
+void Dxl_IRMotionRun(int Motion_Start, int Motion_End, int Speed, int Delay, int IR)
+{
+  int Dxl_IRread = Dxl.readByte(100,0x1B);
+  for(Motion_Start;Motion_Start <= Motion_End; Motion_Start++)
+  {
+    if(DxlData_IR < Dxl_IRset) {
+      Dxl_positionRun(Motion_Start, Speed);
+      delay(Delay);
+    }
+    else break;
+  }
+}
+
+/*
 void Dxl_RemoteRun(char Type, int Speed, int Delay)
 {
   char cnt=0;
