@@ -16,14 +16,14 @@ RC100 Controller;
 #define Dxl_Dance04        Dxl_MotionRun(28,29,Dxl_Speed,Dxl_Delay) /* 웨이브 - 28~29 */
 #define Dxl_Dance05        Dxl_MotionRun(30,31,Dxl_Speed,Dxl_Delay) /* 발 굴리기 - 30~31 */
 #define Dxl_Dance06        Dxl_MotionRun(32,33,Dxl_Speed,Dxl_Delay) /* 제자리 뛰기 - 32~33 */
-#define Dxl_Dance07        Dxl_MotionRun(34,35,Dxl_Speed,Dxl_Delay) /* 몸통 오른쪽으로 흔들기 - 34~35 */
+#define Dxl_Dance07        Dxl_MotionRun(34,35,Dxl_Speed,Dxl_Delay) /* 몸통 오른쪽으로 흔들기 - 34~35 */ 
 #define Dxl_Dance08        Dxl_MotionRun(36,37,Dxl_Speed,Dxl_Delay) /* 몸통 왼쪽으로 흔들기 - 36~37 */
 #define Dxl_Dance09        Dxl_MotionRun(38,39,Dxl_Speed,Dxl_Delay) /* 몸통 크게 흔들기 - 38~39 */
 #define Dxl_Dance10        Dxl_MotionRun(40,41,Dxl_Speed,Dxl_Delay) /* 헤엄치기 40~41 */
 
 #define Dxl_Dance11        Dxl_MotionRun(42,43,Dxl_Speed,Dxl_Delay) /* 밖으로 펌핑 - 42~43 */
 #define Dxl_Dance12        Dxl_MotionRun(44,45,Dxl_Speed,Dxl_Delay) /* 몸통으로 바닥치기 - 44~45 */
-#define Dxl_Dance13        Dxl_MotionRun(46,47,Dxl_Speed,Dxl_Delay) /* 다리로 바닥치기 - 46~47 */
+#define Dxl_Dance13        Dxl_MotionRun(46,47,Dxl_Speed,Dxl_Delay) /* 다리로 바닥치기 - 46~47 *//.
 #define Dxl_Dance14        Dxl_MotionRun(48,49,Dxl_Speed,Dxl_Delay) /* 누워서 모으기 - 48~49 */
 #define Dxl_Dance15        Dxl_MotionRun(50,51,Dxl_Speed,Dxl_Delay) /* 안으로 펌핑 - 50~51 */
 #define Dxl_Dance16        Dxl_MotionRun(52,53,Dxl_Speed,Dxl_Delay) /* 누워서 모든 다리 흔들기 - 52~53 */
@@ -80,7 +80,7 @@ float PSD_Voltage = 0,
 
 void setup() {
   //pinMode(PSD_anloge_Pin, INPUT_ANALOG);
-  RemoteType=0; // 1=Bluetooth, 0=Zigbee
+  RemoteType=1; // 1=Bluetooth, 0=Zigbee
   if(RemoteType == 1) Serial2.begin(9600); // Bluetooth
   else  Controller.begin(1); // Zigbee
   Dxl.begin(3);
@@ -117,6 +117,8 @@ void loop() {
       if(Serial2.available()){
         BT_ZIG_Changer();
         Select_Move();
+        PlayCount_Move();
+        PlayCnt = 0;
       }
   }
   else {
@@ -166,6 +168,11 @@ void BT_ZIG_Changer(void)
      if(RcvData_BT == 'l') RcvData = 'c';
      if(RcvData_BT == 'r') RcvData = 'd';
      if(RcvData_BT == 's') RcvData = 'j';
+     if(RcvData_BT == 'v') RcvData = 'e';
+     if(RcvData_BT == 'w') RcvData = 'f';
+     if(RcvData_BT == 'x') RcvData = 'g';
+     if(RcvData_BT == 'y') RcvData = 'h';
+     if(RcvData_BT == 'z') RcvData = 'i';
   }
   else {
     if(RcvData_ZIG == 0) RcvData = '0';
@@ -223,20 +230,32 @@ void PlayCount_Move(void)
     Dxl_Delay=250;
     while(i)
     {
-        if(Controller.available()){
-          if(Controller.readData() > 0){
-            PlayCnt++;
-            delay(50);
+          if(RemoteType == 1){
+            if(Serial2.available()){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+            }
+            else Dxl_IRmove();
           }
-          if(PlayCnt > 5){
-            BT_ZIG_Changer();
-            if(RcvData == 'i') i=0;
-            PlayCount = 0;
-            PlayCnt = 0;
-            Dxl_Ready;
+          else {
+            if(Controller.available()){
+              if(Controller.readData() > 0){
+                PlayCnt++;
+                delay(50);
+              }
+              if(PlayCnt > 5){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+              }
+            }
+            else Dxl_IRmove();
           }
-        }
-        else Dxl_IRmove();
     }
   }
   
@@ -245,20 +264,32 @@ void PlayCount_Move(void)
     Dxl_Delay=500;
     while(i)
     {
-        if(Controller.available()){
-          if(Controller.readData() > 0){
-            PlayCnt++;
-            delay(50);
+          if(RemoteType == 1){
+            if(Serial2.available()){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+            }
+            else Dxl_Dance25;
           }
-          if(PlayCnt > 5){
-            BT_ZIG_Changer();
-            if(RcvData == 'i') i=0;
-            PlayCount = 0;
-            PlayCnt = 0;
-            Dxl_Ready;
+          else {
+            if(Controller.available()){
+              if(Controller.readData() > 0){
+                PlayCnt++;
+                delay(50);
+              }
+              if(PlayCnt > 5){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+              }
+            }
+            else Dxl_Dance25;
           }
-        }
-        else Dxl_Dance25;
     }
   }
   
@@ -278,21 +309,32 @@ void PlayCount_Move(void)
     Dxl_Dance23;
     while(i)
     {
-        if(Controller.available()){
-          if(Controller.readData() > 0){
-            PlayCnt++;
-            delay(50);
+          if(RemoteType == 1){
+            if(Serial2.available()){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+            }
+            else Dxl_Dance24;
           }
-          if(PlayCnt > 5){
-            BT_ZIG_Changer();
-            if(RcvData == 'i') i=0;
-            PlayCount = 0;
-            PlayCnt = 0;
-            
-            Dxl_Ready;
+          else {
+            if(Controller.available()){
+              if(Controller.readData() > 0){
+                PlayCnt++;
+                delay(50);
+              }
+              if(PlayCnt > 5){
+                BT_ZIG_Changer();
+                if(RcvData == 'i') i=0;
+                PlayCount = 0;
+                PlayCnt = 0;
+                Dxl_Ready;
+              }
+            }
+            else Dxl_Dance24;
           }
-        }
-        else Dxl_Dance24;
     }
   }
 }
